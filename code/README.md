@@ -2,6 +2,8 @@
 
 Repo for research project in My University '23.
 
+Data: [link](https://disk.yandex.com.am/d/Y5rAN8ZC0vz8FA)
+
 ## Quick Start
 
 All the requirements are listed in `requirements.txt`
