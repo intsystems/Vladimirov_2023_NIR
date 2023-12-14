@@ -1,0 +1,24 @@
+dataset: PowerCons
+slice: True
+save_path: checkpoints/${dataset}/SeqS4
+test_run: False # If true results will be not saved!!!!
+
+model_id_start: 2
+model_id_finish: 3
+
+print_every: 10
+
+TS2Vec: False
+model:
+  _target_: src.models.SeqS4
+  hidden_dim: 128
+  dropout: 0.3
+  activ_type: 'sigmoid'
+
+cuda: 'cuda'
+
+batch_size: 256
+lr: 0.001
+step_size: 100
+gamma: 0.3
+n_epochs: 500
