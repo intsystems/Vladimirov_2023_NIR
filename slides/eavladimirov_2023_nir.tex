@@ -75,10 +75,10 @@
 \newcommand{\cX}{\mathcal{X}}
 \newcommand{\cY}{\mathcal{Y}}
 \newcommand{\cW}{\mathcal{W}}
+\newcommand{\cL}{\mathcal{L}}
 
 \newcommand{\dH}{\mathds{H}}
 \newcommand{\dR}{\mathds{R}}
-\newcommand{\dL}{\mathds{L}}
 % transpose
 \newcommand{\T}{^{\mathsf{T}}}
 
@@ -210,7 +210,7 @@
 		\begin{multicols}{2}
 			\begin{align*}
 				\text{Iterative Fast Gradient Sign Method} \\
-				\bx_{t+1} = \bx_t + \epsilon \cdot sign \bigl( \nabla_x \dL (\bff_\theta(\bx_t), \by) \bigr)
+				\bx_{t+1} = \bx_t + \epsilon \cdot sign \bigl( \nabla_x \cL (\bff_\theta(\bx_t), \by) \bigr)
 			\end{align*}
 		
 			\includegraphics[width=0.45\textwidth]{loss-space}
@@ -218,9 +218,9 @@
 	
 		\begin{block}{Предлагаемое улучшение}
 			\begin{align*}
-				\bh_{t+1} &= \bx_t + \epsilon \cdot sign \bigl( \nabla_x \dL (\bff_\theta(\bx_t), \by) \bigr) \\
+				\bh_{t+1} &= \bx_t + \epsilon \cdot sign \bigl( \nabla_x \cL (\bff_\theta(\bx_t), \by) \bigr) \\
 				\Delta_{t+1} &= || \bx_0 - \bh_{t+1} || \\
-				\bx_{t+1} &= \bx_t + \epsilon_{\max} clip \bigl( \nabla_x \dL (\bff_\theta(\bx_t), \by), -\exp(-\Delta_{t+1}^2), \exp(-\Delta_{t+1}^2) \bigr)
+				\bx_{t+1} &= \bx_t + \epsilon_{\max} clip \bigl( \nabla_x \cL (\bff_\theta(\bx_t), \by), -\exp(-\Delta_{t+1}^2), \exp(-\Delta_{t+1}^2) \bigr)
 			\end{align*}
 		\end{block}
 	\end{frame}

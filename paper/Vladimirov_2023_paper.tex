@@ -1,0 +1,79 @@
+\documentclass[a4paper, 14pt]{article}
+
+\input{preamble.tex}
+\renewcommand{\abstractname}{Аннотация}
+
+\title{Состязательные атаки на нейронные сети для работы с временными рядами}
+
+\author{Владимиров Эдуард \\
+	\texttt{vladimirov.ea@phystech.edu} \\
+	\And
+	Зайцев Алексей \\
+	\texttt{a.zaytsev@skoltech.ru}
+}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Существует проблема применения состязательных атак в домене временных рядов, и она заключается в том, что эти атаки очень легко обнаружены. В качестве решения этой задачи предлагается использование различных регуляризаторов, которые обеспечивают сохранение свойств исходного временного ряда. На текущий момент рассмотрен аналог L2-регуляризации. Проведён вычислительный эксперимент с моделями из семейства TS2Vec и с различными датасетами, в котором показано существенное увеличение скрытности атаки.
+	\end{abstract}
+	
+	\keywords{временной ряд \and состязательная атака \and IFGSM}
+	
+	\section{Введение}
+	В работе \cite{vivek2020regularizers} рассмотрено множество модификаций для IFGSM: добавление случайного шума, включение инерции по аналогии с Nesterov Momentum.
+	В работе \cite{pialla2023time} используется регуляризатор гладкости.
+	В будущем стоит рассмотреть и другие регуляризаторы: на периодичность, на размерность вложения.
+	
+	\section{Теоретическая часть}
+
+	\subsection{IFGSM}
+	$$ \bx_{t+1} = \bx_t + \epsilon \cdot sign \bigl( \nabla_x \cL (\bff_\theta(\bx_t), \by) \bigr) $$
+	
+	\begin{align*}
+		\bh_{t+1} &= \bx_t + \epsilon \cdot sign \bigl( \nabla_x \cL (\bff_\theta(\bx_t), \by) \bigr) \\
+		\Delta_{t+1} &= || \bx_0 - \bh_{t+1} || \\
+		\bx_{t+1} &= \bx_t + \epsilon_{\max} clip \bigl( \nabla_x \cL (\bff_\theta(\bx_t), \by), -\exp(-\Delta_{t+1}^2), \exp(-\Delta_{t+1}^2) \bigr)
+	\end{align*}
+	
+	
+	\section{Постановка задачи}
+	Пусть $\bff_\theta: \dR^{E \times T} \longrightarrow [0, 1]$ ~--- обученный классификатор временных рядов, $\bg_\kappa: \dR^{E \times T} \longrightarrow [0, 1]$ ~--- обученный дискриминатор, выдающий вероятность искажения данных.
+	Тогда задача поиска 
+	
+	\section{Вычислительный эксперимент}
+	
+	\begin{table}[bhtp]
+		\caption{Сравнение ванильного и улучшенного IFGSM}
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			\multicolumn{1}{|c|}{\multirow{2}{*}{Attack}} & \multicolumn{1}{c|}{Dataset} & \multicolumn{1}{c|}{Coffee} & FordA \\ \cline{2-4} 
+			\multicolumn{1}{|c|}{}                        & Target model                 & TS2Vec & TS2Vec        \\ \hline
+			\multirow{2}{*}{Vanilla IFGSM}                & Effectiveness                & \textbf{1.00}               & \textbf{1.00} \\ \cline{2-4} 
+			& Concealability               & 0.08                        & 0.28          \\ \hline
+			\multirow{2}{*}{Modified IFGSM}               & Effectiveness                & \textbf{1.00}               & 0.99          \\ \cline{2-4} 
+			& Concealability               & \textbf{0.97}               & \textbf{0.92} \\ \hline
+		\end{tabular}
+	\end{table}
+	
+	\begin{figure}[bhtp]
+		\centering
+		\subfloat[Vanilla IFGSM]{%
+			\includegraphics[width=0.48\linewidth]{vanilla-ifgsm}%
+		}
+		\subfloat[Modified IFGSM]{%
+			\includegraphics[width=0.48\linewidth]{modified-ifgsm}
+		}
+		\caption{Визуализация состязательных атак}
+		\label{fig:spirals}
+	\end{figure}
+	
+	\section{Заключение}
+	TODO
+	
+	\bibliographystyle{unsrtnat}
+	\bibliography{references.bib}
+	
+\end{document}
